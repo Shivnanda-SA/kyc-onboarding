@@ -1,0 +1,155 @@
+country: IN
+version: "1"
+doc_types:
+  certificate_of_incorporation:
+    title: Certificate of Incorporation
+    aliases: ["COI", "Incorporation Certificate", "Company Registration Certificate"]
+    fields:
+      company_name: { required: true, description: "Legal entity name" }
+      registration_number: { required: true, description: "Company registration number / CIN" }
+      incorporation_date: { required: true, description: "Date of incorporation" }
+      registered_address: { required: true, description: "Registered office address" }
+  llp_incorporation_certificate:
+    title: LLP Incorporation Certificate
+    aliases: ["LLP Incorporation", "LLPIN Certificate", "LLP Registration Certificate"]
+    fields:
+      llp_name: { required: true, description: "LLP legal name" }
+      llpin: { required: true, description: "LLP Identification Number" }
+      incorporation_date: { required: true, description: "Date of incorporation" }
+      registered_address: { required: true, description: "Registered office address" }
+  ubo_declaration:
+    title: UBO Declaration
+    aliases: ["Beneficial Ownership Declaration"]
+    fields:
+      entity_name: { required: true }
+      ubo_name: { required: true }
+      ubo_dob: { required: true }
+      ubo_nationality: { required: false }
+      ownership_percent: { required: false }
+  proof_of_address:
+    title: Proof of Address (Utility Bill)
+    aliases: ["Utility Bill", "Address Proof"]
+    fields:
+      entity_name: { required: false }
+      registered_address: { required: true }
+  directors_list:
+    title: Directors List / Company Profile
+    aliases: ["Company Profile", "Directors"]
+    fields:
+      company_name: { required: true }
+      directors: { required: true, description: "Names of directors" }
+
+  pan_card:
+    title: Entity PAN
+    aliases: ["PAN", "PAN Card", "Permanent Account Number"]
+    fields:
+      entity_name: { required: true }
+      pan: { required: true }
+
+  board_resolution:
+    title: Board Resolution (Account Opening)
+    aliases: ["Account Opening Resolution", "Resolution of the Board"]
+    fields:
+      company_name: { required: true }
+      resolution_date: { required: true }
+      authorized_signatories: { required: false }
+
+  moa_aoa:
+    title: MOA/AOA (Extract)
+    aliases: ["Memorandum", "Articles of Association", "MOA", "AOA"]
+    fields:
+      company_name: { required: true }
+      registered_office: { required: true }
+
+  llp_agreement:
+    title: LLP Agreement
+    aliases: ["LLP Deed", "LLP Agreement"]
+    fields:
+      llp_name: { required: true }
+      effective_date: { required: true }
+      partners: { required: true }
+
+  authorization_letter:
+    title: Authorization Letter (Account Opening)
+    aliases: ["Account Opening Authorization", "Authorization Letter"]
+    fields:
+      entity_name: { required: true }
+      authorization_date: { required: true }
+      authorized_signatories: { required: false }
+  
+  # Partnership specific documents
+  partnership_deed:
+    title: Partnership Deed
+    aliases: ["Partnership Agreement", "Partnership Deed"]
+    fields:
+      firm_name: { required: true }
+      partnership_date: { required: true }
+      partner_names: { required: true }
+  
+  partner_list:
+    title: Partners List
+    aliases: ["Partners", "Partner Details"]
+    fields:
+      firm_name: { required: true }
+      partners: { required: true }
+  
+  # Trust specific documents
+  trust_deed:
+    title: Trust Deed
+    aliases: ["Trust Agreement", "Deed of Trust"]
+    fields:
+      trust_name: { required: true }
+      trustee_names: { required: true }
+  
+  trustee_list:
+    title: Trustees List
+    aliases: ["Trustees", "Trustee Details"]
+    fields:
+      trust_name: { required: true }
+      trustees: { required: true }
+
+requirements:
+  - entity_type: company
+    products_any: ["payments", "cash", "trade", "transaction_banking", "fx"]
+    risk_tiers_any: ["low", "medium", "high"]
+    required_docs:
+      - certificate_of_incorporation
+      - pan_card
+      - moa_aoa
+      - directors_list
+      - board_resolution
+      - ubo_declaration
+      - proof_of_address
+
+  # Partnership Firms
+  - entity_type: partnership
+    products_any: ["payments", "cash", "trade", "transaction_banking", "fx"]
+    risk_tiers_any: ["low", "medium", "high"]
+    required_docs:
+      - partnership_deed
+      - partner_list
+      - ubo_declaration
+      - proof_of_address
+
+  # LLPs (Limited Liability Partnerships)
+  - entity_type: llp
+    products_any: ["payments", "cash", "trade", "transaction_banking", "fx"]
+    risk_tiers_any: ["low", "medium", "high"]
+    required_docs:
+      - llp_incorporation_certificate
+      - pan_card
+      - llp_agreement
+      - partner_list
+      - authorization_letter
+      - ubo_declaration
+      - proof_of_address
+
+  # Trusts
+  - entity_type: trust
+    products_any: ["payments", "cash", "trade", "transaction_banking", "fx"]
+    risk_tiers_any: ["low", "medium", "high"]
+    required_docs:
+      - trust_deed
+      - trustee_list
+      - ubo_declaration
+      - proof_of_address

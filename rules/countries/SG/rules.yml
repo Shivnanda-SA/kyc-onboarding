@@ -1,0 +1,128 @@
+country: SG
+version: "1"
+doc_types:
+  certificate_of_incorporation:
+    title: Certificate of Incorporation (ACRA)
+    aliases: ["ACRA BizFile", "Incorporation Certificate"]
+    fields:
+      company_name: { required: true }
+      registration_number: { required: true, description: "UEN / registration number" }
+      incorporation_date: { required: true }
+      registered_address: { required: true }
+  ubo_declaration:
+    title: UBO Declaration
+    aliases: ["Beneficial Ownership Declaration"]
+    fields:
+      entity_name: { required: true }
+      ubo_name: { required: true }
+      ubo_dob: { required: true }
+  proof_of_address:
+    title: Proof of Address (Utility Bill)
+    aliases: ["Utility Bill", "Address Proof"]
+    fields:
+      entity_name: { required: false }
+      registered_address: { required: true }
+  board_resolution:
+    title: Board Resolution (Account Opening)
+    aliases: ["Resolution of the Board"]
+    fields:
+      company_name: { required: true }
+      resolution_date: { required: true }
+  
+  # Trust specific documents (for UI option parity)
+  trust_deed:
+    title: Trust Deed
+    aliases: ["Trust Agreement", "Deed of Trust"]
+    fields:
+      trust_name: { required: true }
+      trustee_names: { required: true }
+  
+  trustee_list:
+    title: Trustees List
+    aliases: ["Trustees", "Trustee Details"]
+    fields:
+      trust_name: { required: true }
+      trustees: { required: true }
+  
+  # Partnership specific documents
+  partnership_agreement:
+    title: Partnership Agreement
+    aliases: ["Partnership Deed", "Partnership Contract"]
+    fields:
+      firm_name: { required: true }
+      partnership_date: { required: true }
+      partner_names: { required: true }
+  
+  partner_list:
+    title: Partners List
+    aliases: ["Partners", "Partner Details"]
+    fields:
+      firm_name: { required: true }
+      partners: { required: true }
+  
+  # Sole Proprietorship documents
+  business_registration:
+    title: Business Registration
+    aliases: ["ACRA Business Profile", "BizFile"]
+    fields:
+      business_name: { required: true }
+      uen: { required: true }
+      owner_name: { required: true }
+  
+  owner_id_proof:
+    title: Owner ID Proof
+    aliases: ["NRIC", "Passport", "Identity Card"]
+    fields:
+      owner_name: { required: true }
+      id_number: { required: true }
+
+requirements:
+  # Companies (Pte Ltd, Ltd)
+  - entity_type: company
+    products_any: ["payments", "cash", "trade", "transaction_banking", "fx"]
+    risk_tiers_any: ["low", "medium", "high"]
+    required_docs:
+      - certificate_of_incorporation
+      - board_resolution
+      - ubo_declaration
+      - proof_of_address
+  
+  # Partnerships (General Partnership, Limited Partnership)
+  - entity_type: partnership
+    products_any: ["payments", "cash", "trade", "transaction_banking", "fx"]
+    risk_tiers_any: ["low", "medium", "high"]
+    required_docs:
+      - partnership_agreement
+      - partner_list
+      - ubo_declaration
+      - proof_of_address
+  
+  # Limited Liability Partnerships (LLP)
+  - entity_type: llp
+    products_any: ["payments", "cash", "trade", "transaction_banking", "fx"]
+    risk_tiers_any: ["low", "medium", "high"]
+    required_docs:
+      - certificate_of_incorporation
+      - partner_list
+      - ubo_declaration
+      - proof_of_address
+
+  # Trusts
+  - entity_type: trust
+    products_any: ["payments", "cash", "trade", "transaction_banking", "fx"]
+    risk_tiers_any: ["low", "medium", "high"]
+    required_docs:
+      - trust_deed
+      - trustee_list
+      - ubo_declaration
+      - proof_of_address
+  
+  # Sole Proprietorships
+  - entity_type: sole_proprietorship
+    products_any: ["payments", "cash", "trade", "transaction_banking", "fx"]
+    risk_tiers_any: ["low", "medium", "high"]
+    required_docs:
+      - business_registration
+      - owner_id_proof
+      - ubo_declaration
+      - proof_of_address
