@@ -1,4 +1,4 @@
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route, NavLink, Link } from 'react-router-dom';
 import { Building2, Plus, Home } from 'lucide-react';
 import CreateCase from './pages/CreateCase';
 import UploadDocuments from './pages/UploadDocuments';
@@ -19,7 +19,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                 <h1 className="text-lg font-semibold text-gray-900">AI KYC Onboarding</h1>
               </div>
             </div>
-            
+
             <nav className="flex items-center gap-4">
               <NavLink
                 to="/"
@@ -53,9 +53,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </main>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">{children}</main>
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 mt-auto">
@@ -75,23 +73,21 @@ function HomePage() {
       <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Building2 className="w-10 h-10 text-primary-600" />
       </div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">
-        AI KYC Onboarding System
-      </h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-4">AI KYC Onboarding System</h1>
       <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-        Automate client onboarding with intelligent document processing, 
-        policy compliance checking, and gap detection.
+        Automate client onboarding with intelligent document processing, policy compliance checking,
+        and gap detection.
       </p>
       <div className="flex items-center justify-center gap-4">
-        <a
-          href="/cases/new"
+        <Link
+          to="/cases/new"
           className="inline-flex items-center gap-2 bg-primary-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-primary-700 transition-colors"
         >
           <Plus className="w-5 h-5" />
           Create New Case
-        </a>
+        </Link>
       </div>
-      
+
       <div className="mt-16 grid grid-cols-3 gap-6 max-w-4xl mx-auto">
         <div className="p-6 bg-white rounded-xl shadow-sm border border-gray-200">
           <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
