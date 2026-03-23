@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 
-const API_BASE = '/api';
+// In production (Vercel), set VITE_API_BASE to your Render API URL, e.g.
+// https://your-backend.onrender.com/api
+const API_BASE = (import.meta.env.VITE_API_BASE || '/api').replace(/\/+$/, '');
 
 interface ApiState<T> {
   data: T | null;
@@ -20,7 +22,7 @@ export function useApi<T>() {
     options?: RequestInit
   ): Promise<R | null> => {
     setState(prev => ({ ...prev, loading: true, error: null }));
-    
+
     try {
       const response = await fetch(`${API_BASE}${endpoint}`, {
         headers: {
@@ -28,12 +30,12 @@ export function useApi<T>() {
         },
         ...options,
       });
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText || `HTTP ${response.status}`);
       }
-      
+
       const data = await response.json();
       setState({ data, loading: false, error: null });
       return data;
@@ -59,7 +61,7 @@ export async function createCase(data: {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  
+
   if (!response.ok) return null;
   return response.json();
 }
@@ -79,12 +81,12 @@ export async function uploadDocuments(
 ): Promise<{ uploaded: { document_id: string; filename: string }[] } | null> {
   const formData = new FormData();
   files.forEach(file => formData.append('files', file));
-  
+
   const response = await fetch(`${API_BASE}/cases/${caseId}/documents`, {
     method: 'POST',
     body: formData,
   });
-  
+
   if (!response.ok) return null;
   return response.json();
 }
@@ -93,7 +95,7 @@ export async function processCase(caseId: string): Promise<{ run_id: string } | 
   const response = await fetch(`${API_BASE}/cases/${caseId}/process`, {
     method: 'POST',
   });
-  
+
   if (!response.ok) return null;
   return response.json();
 }
@@ -120,7 +122,7 @@ export async function draftEmail(caseId: string): Promise<OutreachEmail | null> 
   const response = await fetch(`${API_BASE}/cases/${caseId}/outreach-email`, {
     method: 'POST',
   });
-  
+
   if (!response.ok) return null;
   return response.json();
 }

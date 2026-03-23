@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routers import cases
+from .settings import settings
 from .storage import init_db
 
 # Configure logging
@@ -22,7 +23,7 @@ def create_app() -> FastAPI:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:5173", "http://127.0.0.1:5173","https://kyc-onboarding-e6om.vercel.app"],
+        allow_origins=settings.cors_origin_list(),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -31,6 +32,7 @@ def create_app() -> FastAPI:
     @app.get("/healthz")
     def healthz():
         from .extraction.pipeline import TESSERACT_AVAILABLE
+
         return {
             "ok": True,
             "tesseract_available": TESSERACT_AVAILABLE,
@@ -46,4 +48,3 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
-

@@ -10,8 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
-    # Always load the backend-specific .env regardless of the current working directory.
-    # settings.py is at: backend/app/settings.py -> backend root is one parent up.
+    # Always load the backend-specific .env regardless of current working directory.
     _backend_root = Path(__file__).resolve().parents[1]
     _env_path = _backend_root / ".env"
     model_config = SettingsConfigDict(
@@ -41,6 +40,16 @@ class Settings(BaseSettings):
     )
     rag_top_k: int = Field(default=5, alias="RAG_TOP_K")
 
+    # Comma-separated origins for CORS, e.g.
+    # https://your-app.vercel.app,https://www.yourdomain.com
+    cors_origins: str = Field(
+        default="http://localhost:5173,http://127.0.0.1:5173",
+        alias="CORS_ORIGINS",
+    )
+
+    def cors_origin_list(self) -> list[str]:
+        return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
+
     def ensure_dirs(self) -> None:
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.upload_dir.mkdir(parents=True, exist_ok=True)
@@ -49,11 +58,10 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-# Helpful startup signal for POC debugging.
 logger.info(
-    "Settings loaded. OPENAI_API_KEY set: %s | model: %s | env: %s",
+    "Settings loaded. OPENAI_API_KEY set: %s | model: %s | env: %s | cors_origins: %s",
     bool(settings.openai_api_key),
     settings.openai_model,
     settings.app_env,
+    settings.cors_origin_list(),
 )
-
