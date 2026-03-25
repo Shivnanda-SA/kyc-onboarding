@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     # Comma-separated origins for CORS, e.g.
     # https://your-app.vercel.app,https://www.yourdomain.com
     cors_origins: str = Field(
-        default="http://localhost:5173,http://127.0.0.1:5173,https://kyc-onboarding-e6om-ebmgrhung-shivnanda-sas-projects.vercel.app",
+        default="http://localhost:5173,http://127.0.0.1:5173,https://kyc-onboarding-e6om-opwdxvln3-shivnanda-sas-projects.vercel.app",
         alias="CORS_ORIGINS",
     )
 
