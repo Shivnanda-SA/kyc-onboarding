@@ -13,7 +13,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://kyc-onboarding.onrender.com',
+        target: 'https://kyc-onboarding-1.onrender.com',
         changeOrigin: true,
       },
     },
